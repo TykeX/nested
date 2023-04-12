@@ -1,4 +1,4 @@
-package main
+package nested
 
 import (
 	"encoding/json"
