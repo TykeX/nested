@@ -32,7 +32,13 @@ func TestGet(t *testing.T) {
 		panic("can not parse test json")
 	}
 
-	value, err := Get(stuff, "k", "1")
+	value, err := Get(stuff, "d", "f", "a")
+	if err == nil {
+		fmt.Printf("err should be non-nil and value should be nil %v %v", err, value)
+		t.Fail()
+	}
+
+	value, err = Get(stuff, "k", "1")
 	if err != nil {
 		fmt.Println(err)
 		t.Fail()
@@ -86,7 +92,6 @@ func TestGet(t *testing.T) {
 	}
 }
 
-/*
 func TestWithCkret(t *testing.T) {
 	os.Setenv("ENVIRONMENT", "local")
 	ckret.Init(&aws.Config{Region: aws.String("ap-south-1")})
@@ -146,4 +151,4 @@ func TestGetP(t *testing.T) {
 
 	value := GetP(ckret.GetCkret(), "kyc-comet", "INDIVIDUAL_CKYC", "PROVIDERS", "banana")
 	fmt.Printf("%v", value)
-} */
+}

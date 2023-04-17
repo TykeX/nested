@@ -18,7 +18,11 @@ func Get(data map[string]any, keys ...string) (any, error) {
 	value := any(data)
 	for _, key := range keys {
 		if isObject(value) {
-			value = value.(map[string]any)[key]
+			if temp, ok := value.(map[string]any)[key]; !ok {
+				return temp, errors.New(fmt.Sprintf("key doesn't exist or nil %v", key))
+			} else {
+				value = temp
+			}
 		} else if isArray(value) {
 			index, err := strconv.ParseInt(key, 10, 64)
 			if err != nil {
