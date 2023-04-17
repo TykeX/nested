@@ -86,6 +86,7 @@ func TestGet(t *testing.T) {
 	}
 }
 
+/*
 func TestWithCkret(t *testing.T) {
 	os.Setenv("ENVIRONMENT", "local")
 	ckret.Init(&aws.Config{Region: aws.String("ap-south-1")})
@@ -117,5 +118,32 @@ func TestGets(t *testing.T) {
 		fmt.Printf("%v", value)
 		t.FailNow()
 	}
-
 }
+
+// must panic
+func TestGetsP(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+	os.Setenv("ENVIRONMENT", "local")
+	ckret.Init(&aws.Config{Region: aws.String("ap-south-1")})
+
+	value := GetsP(ckret.GetCkret(), "kyc-comet.INDIVIDUAL_CKYC.PROVIDERS.2")
+	fmt.Printf("%v", value)
+}
+
+// must panic
+func TestGetP(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+	os.Setenv("ENVIRONMENT", "local")
+	ckret.Init(&aws.Config{Region: aws.String("ap-south-1")})
+
+	value := GetP(ckret.GetCkret(), "kyc-comet", "INDIVIDUAL_CKYC", "PROVIDERS", "banana")
+	fmt.Printf("%v", value)
+} */

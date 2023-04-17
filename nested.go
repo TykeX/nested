@@ -2,6 +2,7 @@ package nested
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -38,6 +39,24 @@ func Get(data map[string]any, keys ...string) (any, error) {
 // Gets() calls Get() after spliting key on dot (.)
 func Gets(data map[string]any, key string) (any, error) {
 	return Get(data, strings.Split(key, ".")...)
+}
+
+// Panic version of Get()
+func GetP(data map[string]any, keys ...string) any {
+	value, err := Get(data, keys...)
+	if err != nil {
+		panic(fmt.Sprintf("failed to get %v", strings.Join(keys, ".")))
+	}
+	return value
+}
+
+// Panic version of Gets()
+func GetsP(data map[string]any, key string) any {
+	value, err := Gets(data, key)
+	if err != nil {
+		panic(fmt.Sprintf("failed to get %v", key))
+	}
+	return value
 }
 
 func isObject(d any) bool {
