@@ -31,7 +31,7 @@ func Get(data map[string]any, keys ...string) (any, error) {
 			if index >= int64(len(value.([]any))) {
 				return value, errors.New("index out of bound")
 			}
-			value = value.([]any)[index].(any)
+			value = value.([]any)[index]
 		} else {
 			// there is a key that it need to get but the prev value is neither map nor array
 			return value, errors.New("previous value is not (array or map)")

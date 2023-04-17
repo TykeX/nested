@@ -141,9 +141,8 @@ func TestGetP(t *testing.T) {
 }
 
 // Edge cases
-
 func TestEdgeCase(t *testing.T) {
-	raw := []byte(`{ "first_name": "pawan", "last_name": null}`)
+	raw := []byte(`{ "first_name": "pawan", "last_name": null, "books":[null, null]}`)
 	var stuff map[string]any
 	err := json.Unmarshal(raw, &stuff)
 	if err != nil {
@@ -171,4 +170,87 @@ func TestEdgeCase(t *testing.T) {
 		t.Log("err must not be nil")
 		t.Fail()
 	}
+
+	value, err = Get(stuff, "books", "0")
+	if err != nil {
+		t.Log("err must be nil")
+		t.Fail()
+	}
+
+	if value != nil {
+		t.Log("value must be nil")
+		t.Fail()
+	}
+}
+
+func TestEdgeCaseArray(t *testing.T) {
+	raw := []byte(`
+  {
+    "a": [
+    {
+      "name": "pawan"
+    },
+    [1,2,3]
+    ],
+    "b": {
+      "c": [false, null, "mango"]
+    }
+  }
+  `)
+	var stuff map[string]any
+	err := json.Unmarshal(raw, &stuff)
+	if err != nil {
+		panic("can not parse json")
+	}
+
+	value, err := Get(stuff, "a", "0", "name")
+	if err != nil {
+		t.Log("err must be nil")
+		t.Fail()
+	}
+
+	if value.(string) != "pawan" {
+		t.Log("value must be 'pawan'")
+		t.Fail()
+	}
+
+	value, err = Get(stuff, "a", "1", "0")
+	if err != nil {
+		t.Log("err must be nil")
+		t.Fail()
+	}
+	if value.(float64) != 1 {
+		t.Log("value must be nil")
+		t.Fail()
+	}
+
+	value, err = Get(stuff, "a", "1", "9")
+	if err == nil {
+		t.Log("err must not be nil")
+		t.Fail()
+	}
+
+	value, err = Get(stuff, "b", "c", "1")
+	if err != nil {
+		t.Log("err must be nil")
+		t.Fail()
+	}
+
+	if value != nil {
+		t.Log("value must be nil")
+		t.Fail()
+	}
+
+	value, err = Get(stuff, "b", "c", "1", "1")
+	if err == nil {
+		t.Log("err must not be nil")
+		t.Fail()
+	}
+
+	value, err = Get(stuff, "b", "c", "1", "xxx")
+	if err == nil {
+		t.Log("err must not be nil")
+		t.Fail()
+	}
+
 }
