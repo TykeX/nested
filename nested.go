@@ -30,7 +30,7 @@ func Get(data map[string]interface{}, keys ...string) (any, error) {
 			}
 			v = val[index]
 		default:
-			return v, fmt.Errorf("previous value is neither map[string]any nor []any")
+			return v, fmt.Errorf("previous value is neither map[string]any nor []any, it is %T", v)
 		}
 	}
 	return v, nil
